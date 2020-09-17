@@ -187,10 +187,6 @@ body {
     width: 100%;
 }
 
-form {
-    padding: 40px;
-}
-
 .question {
     margin-bottom: 20px;
     font-size: 20px;
@@ -289,6 +285,7 @@ label.error {
     min-height: calc(100vh - 6rem);
     margin-left: 4em;
     margin-right: 4em;
+    padding-top: 40px;
 }
 
 .bold {
