@@ -39,7 +39,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate(User::$validation);
+        $new_user = new User;
+        $new_user->fill($validatedData);
+        $new_user->save();
+        return redirect('/thank_you');
+    }
+
+    public function thankYou()
+    {
+        return view('users.thank_you');
     }
 
     /**

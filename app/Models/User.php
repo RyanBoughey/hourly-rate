@@ -11,30 +11,19 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public static $validation = [
+        'name' => 'required|max:255',
+        'email' => 'required|unique:users|max:255',
+        'hourly_rate' => 'required|numeric|min:0',
+        'currency_id' => 'required|exists:currencies,id'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+        'name', 'email', 'hourly_rate', 'currency_id'
     ];
 }

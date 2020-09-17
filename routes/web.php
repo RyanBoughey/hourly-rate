@@ -15,3 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [UserController::class, 'create']);
+Route::post('/store', [UserController::class, 'store']);
+Route::get('/thank_you', [UserController::class, 'thankYou']);
