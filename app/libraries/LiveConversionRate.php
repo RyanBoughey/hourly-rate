@@ -14,6 +14,8 @@ class LiveConversionRate
     {
         $this->to_currency = $to_currency;
         $this->from_currency = $from_currency;
+        // I decided not to use Fixer as recommended due to it's free account limitations.
+        // Namely being unable to set a base currency with a free account.
         $this->client = new Client(['base_uri' => 'https://api.exchangeratesapi.io/']);
     }
 
