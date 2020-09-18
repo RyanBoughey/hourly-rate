@@ -26,4 +26,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'hourly_rate', 'currency_id'
     ];
+
+    public function currency()
+    {
+        return $this->belongsTo('App\Models\currency');
+    }
 }
