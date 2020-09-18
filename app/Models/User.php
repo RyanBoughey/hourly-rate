@@ -12,10 +12,10 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     public static $validation = [
-        'name' => 'required|max:255',
-        'email' => 'required|unique:users|max:255',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users|max:255',
         'hourly_rate' => 'required|numeric|min:0',
-        'currency_id' => 'required|exists:currencies,id'
+        'currency_id' => 'required|numeric|exists:currencies,id'
     ];
 
     /**
