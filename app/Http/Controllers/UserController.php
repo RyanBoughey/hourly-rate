@@ -58,7 +58,7 @@ class UserController extends Controller
             // it's the same currency, do nothing
             $user->converted_rate = $user->hourly_rate;
         } else {
-            if ($validatedData['live_rate']) {
+            if (isset($validatedData['live_rate']) && $validatedData['live_rate']) {
                 $conversion = new LiveConversionRate($to_currency->name, $user->currency->name);
                 $conversion_rate = $conversion->convertRate($user->hourly_rate);
             } else {
