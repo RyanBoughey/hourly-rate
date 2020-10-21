@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\currency;
-use App\Models\conversion_rate;
-use App\libraries\LiveConversionRate;
+use App\Models\Currency;
+use App\libraries\CurrencyConversion;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -17,7 +16,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $currencies = currency::all();
+        $currencies = Currency::all();
         return view('users.create', ['currencies' => $currencies]);
     }
 
@@ -49,29 +48,16 @@ class UserController extends Controller
      */
     public function show(User $user, Request $request)
     {
-        $validatedData = $request->validate([
-            'currency_id' => 'required|exists:currencies,id',
-            'live_rate' => 'nullable|boolean',
-        ]);
-        $to_currency = currency::find($validatedData['currency_id']);
+        $validatedData = $request->validate(['currency_id' => 'required|exists:currencies,id',]);
+        $to_currency = Currency::find($validatedData['currency_id']);
         if ($to_currency->id == $user->currency->id) {
             // it's the same currency, do nothing
             $user->converted_rate = $user->hourly_rate;
         } else {
-            if (isset($validatedData['live_rate']) && $validatedData['live_rate']) {
-                $conversion = new LiveConversionRate($to_currency->name, $user->currency->name);
-                $conversion_rate = $conversion->convertRate($user->hourly_rate);
-            } else {
-                $conversion = conversion_rate::where([
-                    ['from_currency_id', $user->currency->id],
-                    ['to_currency_id', $to_currency->id]
-                ])->first();
-                $conversion_rate = $conversion->conversion_rate;
-            }
-
-            $user->converted_rate = $user->hourly_rate * $conversion_rate;
+            $conversion = new CurrencyConversion($to_currency->id, $user->currency->id);
+            $user->converted_rate = $conversion->convertRate($user->hourly_rate);
+            // $user->converted_rate = $user->hourly_rate * $conversion_rate;
         }
-
         $return = [
             'name' => $user->name,
             'email' => $user->email,
